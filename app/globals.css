@@ -1,0 +1,232 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-mint: var(--mint);
+  --color-mint-deep: var(--mint-deep);
+  --color-violet: var(--violet);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --font-sans: var(--font-inter), var(--font-tajawal), ui-sans-serif, system-ui, sans-serif;
+  --font-arabic: var(--font-tajawal), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+}
+
+:root {
+  color-scheme: dark;
+
+  --background: #0b0f17;
+  --surface: #121824;
+  --surface-2: #1e293b;
+  --foreground: #e8edf7;
+
+  --card: #121824;
+  --card-foreground: #e8edf7;
+  --popover: #121824;
+  --popover-foreground: #e8edf7;
+
+  --primary: #6366f1;
+  --primary-foreground: #ffffff;
+  --violet: #8b5cf6;
+
+  --secondary: #1e293b;
+  --secondary-foreground: #e8edf7;
+
+  --muted: #1e293b;
+  --muted-foreground: #8b9ab5;
+
+  --accent: #232d42;
+  --accent-foreground: #e8edf7;
+
+  --destructive: #f4547a;
+  --destructive-foreground: #ffffff;
+
+  --mint: #00ffa3;
+  --mint-deep: #10b981;
+
+  --border: #232d42;
+  --border-strong: #31405e;
+  --input: #1e293b;
+  --ring: #6366f1;
+
+  --radius: 0.875rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    background-image:
+      radial-gradient(60rem 40rem at 15% -10%, color-mix(in oklab, var(--primary) 16%, transparent), transparent 70%),
+      radial-gradient(50rem 35rem at 95% 0%, color-mix(in oklab, var(--mint) 8%, transparent), transparent 70%);
+    background-attachment: fixed;
+  }
+  html[dir='rtl'] body {
+    @apply font-arabic;
+  }
+  ::selection {
+    background: color-mix(in oklab, var(--primary) 45%, transparent);
+  }
+}
+
+@layer components {
+  .glass {
+    background: color-mix(in oklab, var(--surface) 72%, transparent);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    border: 1px solid var(--border);
+  }
+  .glass-strong {
+    background: color-mix(in oklab, var(--surface) 88%, transparent);
+    backdrop-filter: blur(28px) saturate(150%);
+    -webkit-backdrop-filter: blur(28px) saturate(150%);
+    border: 1px solid var(--border-strong);
+  }
+  .glow-mint {
+    box-shadow: 0 0 0 1px color-mix(in oklab, var(--mint) 22%, transparent),
+      0 18px 50px -20px color-mix(in oklab, var(--mint) 45%, transparent);
+  }
+  .glow-violet {
+    box-shadow: 0 0 0 1px color-mix(in oklab, var(--primary) 30%, transparent),
+      0 18px 50px -18px color-mix(in oklab, var(--primary) 70%, transparent);
+  }
+  .text-gradient {
+    background: linear-gradient(100deg, #e8edf7 0%, #a5b4fc 45%, var(--mint) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  /* Numeric values always read left-to-right, even inside an RTL paragraph,
+     so "-$172.80" never gets reordered to "$172.80-" by the bidi algorithm. */
+  .num {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+}
+
+/* Fluid range slider, direction aware */
+input[type='range'].fx-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 1.75rem;
+  background: transparent;
+  cursor: pointer;
+}
+input[type='range'].fx-range::-webkit-slider-runnable-track {
+  height: 0.5rem;
+  border-radius: 999px;
+  background: linear-gradient(
+    to var(--fx-dir, right),
+    var(--primary) 0%,
+    var(--violet) calc(var(--fx-pct, 0%) * 0.999),
+    #1e293b calc(var(--fx-pct, 0%)),
+    #1e293b 100%
+  );
+  border: 1px solid var(--border);
+}
+input[type='range'].fx-range::-moz-range-track {
+  height: 0.5rem;
+  border-radius: 999px;
+  background: linear-gradient(
+    to var(--fx-dir, right),
+    var(--primary) 0%,
+    var(--violet) calc(var(--fx-pct, 0%) * 0.999),
+    #1e293b calc(var(--fx-pct, 0%)),
+    #1e293b 100%
+  );
+  border: 1px solid var(--border);
+}
+input[type='range'].fx-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 1.25rem;
+  width: 1.25rem;
+  margin-top: -0.4rem;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 3px solid var(--primary);
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--primary) 22%, transparent);
+  transition: transform 0.15s ease;
+}
+input[type='range'].fx-range:active::-webkit-slider-thumb {
+  transform: scale(1.12);
+}
+input[type='range'].fx-range::-moz-range-thumb {
+  height: 1.25rem;
+  width: 1.25rem;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 3px solid var(--primary);
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--primary) 22%, transparent);
+}
+input[type='range'].fx-range:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 4px;
+  border-radius: 999px;
+}
+
+/* Hide number input spinners for a cleaner financial look */
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
